@@ -1,18 +1,26 @@
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ include "testchart.fullname" . }}
+  name: {{ .Values.deployment.name }}
+  labels:
+    draft: {{ default "draft-app" .Values.draft }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 spec:
   replicas: {{ .Values.replicaCount }}
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: {{ include "testchart.name" . }}
   template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.name }}
     spec:
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          env:
-            - name: A_VERY_SECRET_PASSWORD
-              value: {{ .Values.secret | quote }}
-
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.service.internalPort }}
+        resources:
+{{ toYaml .Values.resources | indent 12 }}
+        env:
+{{ toYaml .Values.environments | indent 12 }}

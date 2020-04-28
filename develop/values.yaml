@@ -23,14 +23,14 @@ ingress:
   enabled: false
 
 secrets:
-  database_url: '{{ssm "/develop/tempayment/database_url" "region=us-east-1" }}'
-  allowed_hosts: '{{ssm "/develop/tempayment/allowed_hosts" "region=us-east-1" }}'
-  secret_key: '{{ssm "/develop/tempayment/secret_key" "region=us-east-1" }}'
+  database_url: 'my database connection url'
+  allowed_hosts: '*'
+  secret_key: '8298kj@#$%*(9823797jsadk928'
 
 environments:
   - name: DATABASE_URL
-    value: '{{ssm "/develop/tempayment/database_url" "region=us-east-1" }}'
+    value: 'my database connection url'
   - name: ALLOWED_HOSTS
-    value: '{{ssm "/develop/tempayment/allowed_hosts" "region=us-east-1" }}'
+    value: '*'
   - name: SECRET_KEY
-    value: '{{ssm "/develop/tempayment/secret_key" "region=us-east-1" }}'
+    value: '8298kj@#$%*(9823797jsadk928'
